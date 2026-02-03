@@ -31,7 +31,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Title Section ---
-st.title("✨ Can you feel the healing, Da?✨")
+st.title("✨ Can you feel the healing, Da ✨")
 st.write("Moments until we swallow the last of the quadriceps")
 
 # --- The Flip Clock Component (HTML/JS/CSS) ---
