@@ -1,167 +1,140 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from datetime import datetime
 
 # --- Page Configuration ---
-st.set_page_config(page_title="The Countdown", page_icon="\I0001F48A", layout="centered")
+st.set_page_config(page_title="Modern Med Warrior, my Da", page_icon="💊", layout="centered")
 
-# --- Custom CSS for the Ethereal Black & Purple Theme ---
-# This sets the background to black and adds the purple glow effects
+# --- Custom CSS (The Ethereal Theme) ---
 st.markdown("""
     <style>
-    /* Force the main background to be black */
     .stApp {
-        background-color: #000000;
+        background-color: #050505;
     }
-    
-    /* Text Styling */
-    h1 {
-        color: #E0B0FF !important; /* Mauve/Purple */
-        text-align: center;
+    h1, h2, h3 {
+        color: #E0B0FF !important; /* Mauve */
         font-family: 'Helvetica Neue', sans-serif;
-        text-shadow: 0 0 20px #8A2BE2; /* Ethereal Glow */
-        font-weight: 300;
+        text-shadow: 0 0 10px #8A2BE2;
     }
-    
-    p {
-        color: #D8BFD8;
-        text-align: center;
-        font-size: 1.2rem;
+    .stFileUploader label {
+        color: #D8BFD8 !important;
+        font-size: 1.1rem;
+    }
+    /* Style the success boxes to be purple/dark */
+    .stAlert {
+        background-color: #1a0b2e;
+        color: #E0B0FF;
+        border: 1px solid #8A2BE2;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- Title Section ---
-st.title("✨ Can you feel the healing, Da ✨")
-st.write("Moments until we swallow the last of the quadriceps")
+# --- Header Section ---
+st.title("🛡️ Protocol: Health Restoration")
+st.write("Stay the course. Finish the mission.")
 
-# --- The Flip Clock Component (HTML/JS/CSS) ---
-# We use HTML/JS here because Streamlit's native python loop is too slow 
-# for a smooth "second-by-second" animation.
+# --- The Countdown (Target: Feb 14, 23:00) ---
+# We keep the flip clock because it looks cool as a "Mission Timer"
 flip_clock_html = """
 <!DOCTYPE html>
 <html>
 <head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-
-    body {
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 300px;
-        margin: 0;
-        font-family: 'Bebas Neue', cursive;
-    }
-
-    .container {
-        display: flex;
-        gap: 20px;
-    }
-
-    .time-segment {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* The "Flip Card" look */
+    body { background-color: transparent; font-family: 'Bebas Neue', cursive; margin:0; }
+    .container { display: flex; justify-content: center; gap: 15px; }
     .card {
-        background-color: #111;
-        color: #bf00ff; /* Electric Purple */
-        font-size: 80px;
-        padding: 20px 10px;
-        border-radius: 10px;
-        min-width: 100px;
-        text-align: center;
-        position: relative;
-        box-shadow: 0 0 25px rgba(191, 0, 255, 0.4); /* Ethereal Glow */
-        border: 1px solid #333;
+        background-color: #111; color: #bf00ff;
+        font-size: 50px; padding: 10px; border-radius: 8px;
+        min-width: 60px; text-align: center;
+        box-shadow: 0 0 15px rgba(191, 0, 255, 0.3); border: 1px solid #333;
     }
-
-    /* The "Split" line in the middle of the card */
-    .card::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #000;
-        opacity: 0.8;
-    }
-
-    .label {
-        color: #D8BFD8;
-        margin-top: 10px;
-        font-size: 18px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-family: sans-serif;
-    }
-
-    @media (max-width: 600px) {
-        .card { font-size: 40px; min-width: 60px; padding: 10px 5px; }
-        .container { gap: 10px; }
-    }
+    .label { color: #D8BFD8; font-size: 14px; text-align: center; font-family: sans-serif; margin-top:5px;}
 </style>
 </head>
 <body>
-
 <div class="container">
-    <div class="time-segment">
-        <div class="card" id="days">00</div>
-        <div class="label">Days</div>
-    </div>
-    <div class="time-segment">
-        <div class="card" id="hours">00</div>
-        <div class="label">Hours</div>
-    </div>
-    <div class="time-segment">
-        <div class="card" id="minutes">00</div>
-        <div class="label">Minutes</div>
-    </div>
-    <div class="time-segment">
-        <div class="card" id="seconds">00</div>
-        <div class="label">Seconds</div>
-    </div>
+    <div><div class="card" id="days">00</div><div class="label">DAYS</div></div>
+    <div><div class="card" id="hours">00</div><div class="label">HOURS</div></div>
+    <div><div class="card" id="minutes">00</div><div class="label">MINS</div></div>
 </div>
-
 <script>
-    // Set the date we're counting down to (Feb 14, 2026 23:00:00 SAST)
-    // SAST is UTC+2
     const countDownDate = new Date("Feb 14, 2026 23:00:00 GMT+0200").getTime();
-
-    const x = setInterval(function() {
+    setInterval(function() {
         const now = new Date().getTime();
         const distance = countDownDate - now;
-
-        // Time calculations
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Update the HTML elements
-        document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
-        document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
-        document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
-        document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
-
-        // If the count down is finished, display text
-        if (distance < 0) {
-            clearInterval(x);
-            document.querySelector(".container").innerHTML = "<h1 style='color:#bf00ff'>IT IS TIME</h1>";
-        }
+        document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24));
+        document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     }, 1000);
 </script>
-
 </body>
 </html>
 """
-
-# Inject the HTML component
-components.html(flip_clock_html, height=400)
+components.html(flip_clock_html, height=120)
+st.caption("Time remaining until course completion")
 
 st.divider()
-st.caption("📍 Timezone: South Africa Standard Time (SAST)")
+
+# --- Daily Check-In Logic ---
+st.subheader("📝 Daily Checks with Canis")
+
+# We create tabs for each major mealtime
+tab1, tab2, tab3 = st.tabs(["🌅 Morning", "☀️ Afternoon", "🌙 Evening"])
+
+def check_in_section(key_prefix, label_meal, label_meds):
+    """Reusable function to create the uploaders"""
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.info(f"**Step 1:** {label_meal}")
+        meal_pic = st.file_uploader("Upload Meal Pic", type=['jpg','png'], key=f"{key_prefix}_meal")
+        
+    with col2:
+        st.info(f"**Step 2:** {label_meds}")
+        med_pic = st.file_uploader("Upload Meds Pic", type=['jpg','png'], key=f"{key_prefix}_meds")
+
+    # Validation Logic
+    if meal_pic and med_pic:
+        st.success("✅ Checkpoint Cleared! Healing Process: +10 XP")
+        st.balloons() # Confetti animation!
+        # Optional: Display the images they just uploaded
+        with st.expander("View Proof"):
+            c1, c2 = st.columns(2)
+            c1.image(meal_pic, width=150)
+            c2.image(med_pic, width=150)
+    elif meal_pic or med_pic:
+        st.warning("⚠️ Uhm, Incomplete! (respectfully) Please upload both to clear this checkpoint.")
+
+# --- Populating the Tabs ---
+
+with tab1:
+    st.write("Start the day right. Fuel first, then armour - Bible read?")
+    check_in_section("morning", "Eat Breakfast (Coat the stomach!)", "Take Morning Dose 💊")
+
+with tab2:
+    st.write("Keep the momentum. You're doing great, Liki")
+    check_in_section("noon", "Eat Lunch", "Take Afternoon Dose 💊")
+
+with tab3:
+    st.write(" Yes, unfortunate that I'm still 35 Km away, but time to rest soon. Wrap up.")
+    check_in_section("night", "Eat Dinner", "Take Night Dose 💊")
+
+# --- Progress Bar (Visual Motivation) ---
+st.divider()
+st.subheader("🧬 Course Integrity")
+
+# Calculate today's progress based on uploads
+# This resets if they refresh the page, but gives instant dopamine
+uploads_count = 0
+if st.session_state.get('morning_meal') and st.session_state.get('morning_meds'): uploads_count += 1
+if st.session_state.get('noon_meal') and st.session_state.get('noon_meds'): uploads_count += 1
+if st.session_state.get('night_meal') and st.session_state.get('night_meds'): uploads_count += 1
+
+progress = int((uploads_count / 3) * 100)
+st.progress(progress)
+
+if progress == 100:
+    st.write("🌟 **Daily Objective Complete.** Rest well, warrior.")
+else:
+    st.write(f"Daily Completion: **{progress}%**")
