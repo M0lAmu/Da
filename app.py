@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # --- Page Configuration ---
-st.set_page_config(page_title="The Countdown", page_icon="💜", layout="centered")
+st.set_page_config(page_title="The Countdown", page_icon="\I0001F48A", layout="centered")
 
 # --- Custom CSS for the Ethereal Black & Purple Theme ---
 # This sets the background to black and adds the purple glow effects
@@ -31,8 +31,8 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Title Section ---
-st.title("✨ Can you feel the healing, Da✨")
-st.write("Moments until we swallow the last of the quad-downers")
+st.title("✨ Can you feel the healing, Da?✨")
+st.write("Moments until we swallow the last of the quadriceps")
 
 # --- The Flip Clock Component (HTML/JS/CSS) ---
 # We use HTML/JS here because Streamlit's native python loop is too slow 
