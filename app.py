@@ -113,7 +113,7 @@ with tab1:
     check_in_section("morning", "Eat Breakfast (Coat the stomach!)", "Take Morning Dose 💊")
 
 with tab2:
-    st.write("Keep the momentum. You're doing great, Liki")
+    st.write("Keep the momentum. You're doing great, Bobo")
     check_in_section("noon", "Eat Lunch", "Take Afternoon Dose 💊")
 
 with tab3:
